@@ -29,5 +29,5 @@ if __name__ == '__main__':
 
     files = filesx(OUT,'.log')               # Отсортированы по имени файла
     n = obrlog(OUT,files,XLS)                # Обработка log файлов
-    print(f"Обработана {n} заправки")
+    print(f"Количество CLEAR CASH = {n}")
 
