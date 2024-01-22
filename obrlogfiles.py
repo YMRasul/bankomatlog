@@ -67,7 +67,7 @@ def obrlog(dir,files,xls):
 
     ln = len(files)
     l = 0
-
+    cle = 0
     while (l<ln):
         itogi = [0,0,0,0,0]
         with open( dir / files[l], 'r') as f:  # Открыть файл для чтения ==files[i]== булади
@@ -75,6 +75,7 @@ def obrlog(dir,files,xls):
         dic = clearCashTyp(txt)
         if dic is not None:
             lexcel = lexcel + 1
+            cle = cle + 1
             data = [dic['Dat'],dic['Tim'],
                 dic["A"][0], dic["A"][1],
                 dic["B"][0], dic["B"][1],
@@ -133,7 +134,7 @@ def obrlog(dir,files,xls):
                     itogi[3] = itogi[3] + mas[li][7]
                     itogi[4] = itogi[4] + mas[li][8]
                     li = li + 1
-            #
+                lexcel = lexcel + 1
                 data = ['Итого','',
                     dic["A"][0], dic["A"][1],
                     dic["B"][0], dic["B"][1],
@@ -151,4 +152,4 @@ def obrlog(dir,files,xls):
         l = l + 1
     wb.save(xls / 'some.xlsx')
     print('3-этап obrlogfiles')
-    return ln
+    return cle
