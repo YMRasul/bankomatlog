@@ -69,6 +69,7 @@ def obrlog(dir,files,xls):
     l = 0
 
     while (l<ln):
+        itogi = [0,0,0,0,0]
         with open( dir / files[l], 'r') as f:  # Открыть файл для чтения ==files[i]== булади
             txt = [line for line in f]
         dic = clearCashTyp(txt)
@@ -104,8 +105,8 @@ def obrlog(dir,files,xls):
                     # 0 - признак сбоя
                     # 1 - дата
                     # 2 - время
-                    # 3 - Сумма
-                    # 4 - N карты
+                    # 3 - N карты
+                    # 4 - Сумма
                     # 5 - A
                     # 6 - B
                     # 7 - C
@@ -126,8 +127,28 @@ def obrlog(dir,files,xls):
                     for i, statN in enumerate(data):
                         ws.cell(row=lexcel, column=i + 1).value = statN
 
+                    itogi[0] = itogi[0] + mas[li][4]
+                    itogi[1] = itogi[1] + mas[li][5]
+                    itogi[2] = itogi[2] + mas[li][6]
+                    itogi[3] = itogi[3] + mas[li][7]
+                    itogi[4] = itogi[4] + mas[li][8]
                     li = li + 1
+            #
+                data = ['Итого','',
+                    dic["A"][0], dic["A"][1],
+                    dic["B"][0], dic["B"][1],
+                    dic["C"][0], dic["C"][1],
+                    dic["D"][0], dic["D"][1],
+                    dic["A"][0]*dic["A"][1]+
+                    dic["B"][0]*dic["B"][1]+
+                    dic["C"][0]*dic["C"][1]+
+                    dic["D"][0]*dic["D"][1],
+                    itogi[0],
+                    itogi[1], itogi[2], itogi[3], itogi[4],
+                    '', '', '', '', '', '']
+                for i, statN in enumerate(data):
+                    ws.cell(row=lexcel, column=i + 1).value = statN
         l = l + 1
     wb.save(xls / 'some.xlsx')
     print('3-этап obrlogfiles')
-    return None
+    return ln
