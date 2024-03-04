@@ -55,7 +55,7 @@ def clearCashTyp(txt):
     else:
         return None
 
-def obrlog(dir,files,xls):
+def obrlog(dir,files,xls,prz):
     wb = ox.Workbook()
     ws = wb.worksheets[0]
 
@@ -102,31 +102,30 @@ def obrlog(dir,files,xls):
             if lm > 0:
                 while li < lm:
                     #print(mas[li][0],mas[li][1],mas[li][2],mas[li][3],mas[li][4])
-                    lexcel = lexcel + 1
-                    # 0 - признак сбоя
-                    # 1 - дата
-                    # 2 - время
-                    # 3 - N карты
-                    # 4 - Сумма
-                    # 5 - A
-                    # 6 - B
-                    # 7 - C
-                    # 8 - D
-                    if (mas[li][0]==0):
-                        data = [mas[li][1], mas[li][2],
-                        0,0,0,0,0,0,0,0,0,
-                        mas[li][4],
-                        mas[li][5], mas[li][6], mas[li][7],mas[li][8],
-                        mas[li][3],0, 0, 0, 0, 0]
-                    else:
-                        data = [mas[li][1], mas[li][2],
-                        0, 0, 0, 0, 0, 0, 0, 0, 0,
-                        0, 0, 0, 0, 0, mas[li][3], mas[li][4],
-                        mas[li][5], mas[li][6], mas[li][7], mas[li][8]
-                                ]
-
-                    for i, statN in enumerate(data):
-                        ws.cell(row=lexcel, column=i + 1).value = statN
+                    if prz=='0':
+                        lexcel = lexcel + 1
+                        # 0 - признак сбоя
+                        # 1 - дата
+                        # 2 - время
+                        # 3 - N карты
+                        # 4 - Сумма
+                        # 5 - A
+                        # 6 - B
+                        # 7 - C
+                        # 8 - D
+                        if (mas[li][0]==0):
+                            data = [mas[li][1], mas[li][2],
+                            0,0,0,0,0,0,0,0,0,
+                            mas[li][4],
+                            mas[li][5], mas[li][6], mas[li][7],mas[li][8],
+                            mas[li][3],0, 0, 0, 0, 0]
+                        else:
+                            data = [mas[li][1], mas[li][2],
+                            0, 0, 0, 0, 0, 0, 0, 0, 0,
+                            0, 0, 0, 0, 0, mas[li][3], mas[li][4],
+                            mas[li][5], mas[li][6], mas[li][7], mas[li][8]]
+                        for i, statN in enumerate(data):
+                            ws.cell(row=lexcel, column=i + 1).value = statN
 
                     itogi[0] = itogi[0] + mas[li][4]
                     itogi[1] = itogi[1] + mas[li][5]
@@ -135,21 +134,35 @@ def obrlog(dir,files,xls):
                     itogi[4] = itogi[4] + mas[li][8]
                     li = li + 1
                 lexcel = lexcel + 1
-                data = ['Итого','',
-                    dic["A"][0], dic["A"][1],
-                    dic["B"][0], dic["B"][1],
-                    dic["C"][0], dic["C"][1],
-                    dic["D"][0], dic["D"][1],
-                    dic["A"][0]*dic["A"][1]+
-                    dic["B"][0]*dic["B"][1]+
-                    dic["C"][0]*dic["C"][1]+
-                    dic["D"][0]*dic["D"][1],
-                    itogi[0],
-                    itogi[1], itogi[2], itogi[3], itogi[4],
-                    '', '', '', '', '', '']
+                if prz=='0':
+                    data = ['Итого','',
+                        dic["A"][0], dic["A"][1],
+                        dic["B"][0], dic["B"][1],
+                        dic["C"][0], dic["C"][1],
+                        dic["D"][0], dic["D"][1],
+                        dic["A"][0]*dic["A"][1]+
+                        dic["B"][0]*dic["B"][1]+
+                        dic["C"][0]*dic["C"][1]+
+                        dic["D"][0]*dic["D"][1],
+
+                        itogi[0],
+                        itogi[1], itogi[2], itogi[3], itogi[4],
+                        '', '', '', '', '', '']
+                else:
+                    data = ['', '',
+                            '','','','','','','','','',
+                            itogi[0],
+                            itogi[1], itogi[2], itogi[3], itogi[4],
+                            '', '', '', '', '', '']
                 for i, statN in enumerate(data):
                     ws.cell(row=lexcel, column=i + 1).value = statN
         l = l + 1
-    wb.save(xls / 'some.xlsx')
+
+    if prz=='0':
+        fa = 'some.xlsx'
+    else:
+        fa = 'sometotal.xlsx'
+
+    wb.save(xls / fa)
     print('3-этап obrlogfiles')
     return cle
